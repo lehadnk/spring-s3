@@ -29,4 +29,14 @@ public class TestS3Storage implements S3Storage {
     public String getStorageRegion() {
         return "EU";
     }
+
+    @Override
+    public String getBucketName() {
+        return "default";
+    }
+
+    @Override
+    public String getEndpoint() {
+        return "https://s3.test.com";
+    }
 }

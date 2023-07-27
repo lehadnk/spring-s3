@@ -1,29 +1,27 @@
 package s3.s3;
 
-import software.amazon.awssdk.core.sync.RequestBody;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import s3.s3.business.FileManager;
+import s3.s3.dto.UploadFileResult;
+import software.amazon.awssdk.services.s3.model.S3Object;
 
 import java.util.Base64;
-import java.util.HashMap;
 import java.util.List;
 
 public class S3Service {
-    private final HashMap<String, HashMap<String, S3Storage>> s3Storages = new HashMap<>();
+    private final FileManager fileManager;
 
     public S3Service(
-            List<S3Storage> s3Storages
+            FileManager fileManager
     ) {
-        for (var storage : s3Storages) {
-            if (!this.s3Storages.containsKey(storage.getStorageRegion())) {
-                this.s3Storages.put(storage.getStorageRegion(), new HashMap<>());
-            }
-
-            this.s3Storages.get(storage.getStorageRegion()).put(storage.getStorageName(), storage);
-        }
+        this.fileManager = fileManager;
     }
 
-    public void uploadFile(String region, String contentType, String base64EncodedFileContents, String fileName) {
-        this.uploadFile(
+    public UploadFileResult uploadFile(String region, String storageName, byte[] fileContents, String fileName) {
+        return this.fileManager.uploadFile(region, storageName, fileContents, fileName);
+    }
+
+    public UploadFileResult uploadFile(String region, String contentType, String base64EncodedFileContents, String fileName) {
+        return this.uploadFile(
                 region,
                 contentType,
                 Base64.getDecoder().decode(base64EncodedFileContents.getBytes()),
@@ -31,14 +29,11 @@ public class S3Service {
         );
     }
 
-    public void uploadFile(String region, String storageName, byte[] fileContents, String fileName) {
-        var request = PutObjectRequest.builder()
-                .bucket("default")
-                .key(fileName)
-                .build();
+    public List<S3Object> listFiles(String region, String storageName) {
+        return this.fileManager.listFiles(region, storageName);
+    }
 
-        var body = RequestBody.fromBytes(fileContents);
-
-        this.s3Storages.get(region).get(storageName).getS3Client().putObject(request, body);
+    public void deleteFile(String region, String storageName, String fileName) {
+        this.fileManager.deleteFile(region, storageName, fileName);
     }
 }

@@ -7,4 +7,6 @@ public interface S3Storage {
     String getKeyPrefix();
     String getStorageName();
     String getStorageRegion();
+    String getBucketName();
+    String getEndpoint();
 }
