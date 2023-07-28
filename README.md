@@ -34,12 +34,17 @@ public class UserAvatarChineseS3Storage implements S3Storage {
     public String getBucketName() {
         return "user-content";
     }
+
+    @Override
+    public String getEndpoint() {
+        return "https://s3.test.com";
+    }
 }
 ```
 
 ### Bean configuration
 ```java
-@Import({S3ConfigurationBean.class})
+@Import({SpringS3BeanConfiguration.class})
 public class S3ConfigurationBean {
     @Bean
     public UserAvatarChineseS3Storage userAvatarChineseS3Storage()
@@ -65,13 +70,22 @@ public class S3ConfigurationBean {
 
 ### Usage
 ```java
-public void uploadFile()
-{
-    return this.s3Storage.uploadFile(
-        "China",
-        "avatars",
-        "TWFuIGlzIGRpc3Rpbmd1aXNoZWQsIG5vdCBvbmx5IGJ5IGhpcyByZWFzb24sIGJ1dCAuLi4=",
-        "test.txt"
-    );
+public class FileUploader {
+    private final S3Service s3Service;
+    
+    public FileUploader(S3Service s3Service)
+    {
+        this.s3Service = s3Service;
+    }
+    
+    public void uploadFile()
+    {
+        return this.s3Service.uploadFile(
+                "China",
+                "avatars",
+                "TWFuIGlzIGRpc3Rpbmd1aXNoZWQsIG5vdCBvbmx5IGJ5IGhpcyByZWFzb24sIGJ1dCAuLi4=",
+                "test.txt"
+        );
+    }
 }
 ```

@@ -3,6 +3,18 @@ package s3.s3.business;
 public class PathConcatenator {
     public String concatPaths(String path1, String path2)
     {
+        if (path1 == null && path2 == null) {
+            return "";
+        }
+
+        if (path1 == null) {
+            return path2;
+        }
+
+        if (path2 == null) {
+            return path1;
+        }
+
         var result = path1.trim();
         if (!result.endsWith("/")) {
             result += "/";

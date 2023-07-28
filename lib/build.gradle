@@ -1,7 +1,6 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
-    id 'jacoco'
     id 'org.springframework.boot' version '3.0.6' apply false
 }
 
@@ -46,18 +45,6 @@ java {
 
 jar {
     enabled = true
-}
-
-jacocoTestReport {
-    dependsOn intTest
-}
-
-jacoco {
-    toolVersion = "0.8.9"
-}
-
-intTest {
-    finalizedBy jacocoTestReport
 }
 
 publishing {

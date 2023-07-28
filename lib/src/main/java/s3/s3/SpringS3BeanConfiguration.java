@@ -9,7 +9,7 @@ import s3.s3.business.StorageContainer;
 import java.util.List;
 
 @Configuration
-public class S3ServiceBeanConfiguration {
+public class SpringS3BeanConfiguration {
     @Bean
     public S3Service createS3Service(
             FileManager fileManager
