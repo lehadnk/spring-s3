@@ -1,10 +1,10 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
-    id 'org.springframework.boot' version '3.0.6' apply false
+    id 'org.springframework.boot' version '2.7.4' apply false
 }
 
-version = '1.0.0'
+version = '1.0.1'
 group = 'com.github.lehadnk'
 
 repositories {
@@ -38,7 +38,7 @@ configurations {
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(20)
+        languageVersion = JavaLanguageVersion.of(19)
     }
     withSourcesJar()
 }

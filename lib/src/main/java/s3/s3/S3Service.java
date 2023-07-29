@@ -6,6 +6,7 @@ import software.amazon.awssdk.services.s3.model.S3Object;
 
 import java.util.Base64;
 import java.util.List;
+import java.util.UUID;
 
 public class S3Service {
     private final FileManager fileManager;
@@ -20,12 +21,30 @@ public class S3Service {
         return this.fileManager.uploadFile(region, storageName, fileContents, fileName);
     }
 
+    public UploadFileResult uploadFile(String region, String storageName, byte[] fileContents) {
+        return this.uploadFile(
+                region,
+                storageName,
+                fileContents,
+                UUID.randomUUID().toString()
+        );
+    }
+
     public UploadFileResult uploadFile(String region, String contentType, String base64EncodedFileContents, String fileName) {
         return this.uploadFile(
                 region,
                 contentType,
                 Base64.getDecoder().decode(base64EncodedFileContents.getBytes()),
                 fileName
+        );
+    }
+
+    public UploadFileResult uploadFile(String region, String contentType, String base64EncodedFileContents) {
+        return this.uploadFile(
+                region,
+                contentType,
+                base64EncodedFileContents,
+                UUID.randomUUID().toString()
         );
     }
 

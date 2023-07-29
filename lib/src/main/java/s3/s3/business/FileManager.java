@@ -24,7 +24,8 @@ public class FileManager {
 
     public UploadFileResult uploadFile(String region, String storageName, byte[] fileContents, String fileName) {
         var storage = this.storageContainer.getStorage(region, storageName);
-        var key = this.pathConcatenator.concatPaths(storage.getKeyPrefix(), fileName);
+        var key = this.pathConcatenator.concatPaths(storage.getBucketName(), storage.getKeyPrefix());
+        key = this.pathConcatenator.concatPaths(key, fileName);
 
         var request = PutObjectRequest.builder()
                 .bucket(storage.getBucketName())
