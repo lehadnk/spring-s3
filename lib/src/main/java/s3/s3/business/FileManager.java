@@ -24,8 +24,7 @@ public class FileManager {
 
     public UploadFileResult uploadFile(String region, String storageName, byte[] fileContents, String fileName) {
         var storage = this.storageContainer.getStorage(region, storageName);
-        var key = this.pathConcatenator.concatPaths(storage.getBucketName(), storage.getKeyPrefix());
-        key = this.pathConcatenator.concatPaths(key, fileName);
+        var key = this.pathConcatenator.concatPaths(storage.getKeyPrefix(), fileName);
 
         var request = PutObjectRequest.builder()
                 .bucket(storage.getBucketName())
@@ -35,7 +34,9 @@ public class FileManager {
         var body = RequestBody.fromBytes(fileContents);
 
         storage.getS3Client().putObject(request, body);
-        return UploadFileResultFactory.success(this.pathConcatenator.concatPaths(storage.getEndpoint(), key));
+
+        var path = this.pathConcatenator.concatPaths(storage.getBucketName(), key);
+        return UploadFileResultFactory.success(this.pathConcatenator.concatPaths(storage.getEndpoint(), path));
     }
 
     public List<S3Object> listFiles(String region, String storageName)
