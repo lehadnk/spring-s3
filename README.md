@@ -2,11 +2,10 @@
 
 ### Storage definitions
 ```java
-@Component
 public class UserAvatarChineseS3Storage implements S3Storage {
     private final S3Client s3Client;
 
-    public TestS3Storage(S3Client s3Client) {
+    public UserAvatarChineseS3Storage(S3Client s3Client) {
         this.s3Client = s3Client;
     }
 

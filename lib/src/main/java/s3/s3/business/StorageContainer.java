@@ -13,12 +13,16 @@ public class StorageContainer {
             List<S3Storage> s3Storages
     ) {
         for (var storage : s3Storages) {
-            if (!this.s3Storages.containsKey(storage.getStorageRegion())) {
-                this.s3Storages.put(storage.getStorageRegion(), new HashMap<>());
-            }
-
-            this.s3Storages.get(storage.getStorageRegion()).put(storage.getStorageName(), storage);
+            this.addStorage(storage);
         }
+    }
+
+    public void addStorage(S3Storage storage) {
+        if (!this.s3Storages.containsKey(storage.getStorageRegion())) {
+            this.s3Storages.put(storage.getStorageRegion(), new HashMap<>());
+        }
+
+        this.s3Storages.get(storage.getStorageRegion()).put(storage.getStorageName(), storage);
     }
 
     public S3Storage getStorage(String region, String storageName) {
