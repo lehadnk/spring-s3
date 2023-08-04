@@ -5,9 +5,26 @@ import software.amazon.awssdk.services.s3.S3Client;
 
 public class TestS3Storage implements S3Storage {
     private final S3Client s3Client;
+    private final String keyPrefix;
+    private final String storageName;
+    private final String storageRegion;
+    private final String bucketName;
+    private final String endpoint;
 
-    public TestS3Storage(S3Client s3Client) {
+    public TestS3Storage(
+            S3Client s3Client,
+            String keyPrefix,
+            String storageName,
+            String storageRegion,
+            String bucketName,
+            String endpoint
+    ) {
         this.s3Client = s3Client;
+        this.keyPrefix = keyPrefix;
+        this.storageName = storageName;
+        this.storageRegion = storageRegion;
+        this.bucketName = bucketName;
+        this.endpoint = endpoint;
     }
 
     @Override
@@ -17,26 +34,31 @@ public class TestS3Storage implements S3Storage {
 
     @Override
     public String getKeyPrefix() {
-        return "avatars/";
+        return this.keyPrefix;
+//        return "avatars/";
     }
 
     @Override
     public String getStorageName() {
-        return "avatars";
+        return this.storageName;
+//        return "avatars";
     }
 
     @Override
     public String getStorageRegion() {
-        return "EU";
+        return this.storageRegion;
+//        return "EU";
     }
 
     @Override
     public String getBucketName() {
-        return "default";
+        return this.bucketName;
+//        return "default";
     }
 
     @Override
     public String getEndpoint() {
-        return "https://s3.test.com";
+        return this.endpoint;
+//        return "https://s3.test.com";
     }
 }

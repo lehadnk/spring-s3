@@ -31,7 +31,7 @@ public class LibraryTest {
     private S3Service s3Service;
 
     @Test
-    public void test()
+    public void testLibraryCode()
     {
         this.startLocalstack();
         this.createS3Client();
@@ -62,7 +62,16 @@ public class LibraryTest {
     }
 
     private void createTestS3Storage() {
-        this.testS3Storages = List.of(new TestS3Storage(this.s3Client));
+        this.testS3Storages = List.of(
+            new TestS3Storage(
+                this.s3Client,
+            "avatars/",
+            "avatars",
+            "EU",
+            "default",
+            "http://s3.test.com"
+            )
+        );
     }
 
     private void startLocalstack() {
