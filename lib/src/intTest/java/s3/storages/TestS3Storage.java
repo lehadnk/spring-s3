@@ -57,7 +57,7 @@ public class TestS3Storage implements S3Storage {
     }
 
     @Override
-    public String getEndpoint() {
+    public String getPublicEndpoint() {
         return this.endpoint;
 //        return "https://s3.test.com";
     }

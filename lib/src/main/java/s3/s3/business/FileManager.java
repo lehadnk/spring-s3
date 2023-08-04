@@ -36,7 +36,7 @@ public class FileManager {
         storage.getS3Client().putObject(request, body);
 
 //        var path = this.pathConcatenator.concatPaths(storage.getBucketName(), key);
-        return UploadFileResultFactory.success(this.pathConcatenator.concatPaths(storage.getEndpoint(), key));
+        return UploadFileResultFactory.success(this.pathConcatenator.concatPaths(storage.getPublicEndpoint(), key));
     }
 
     public List<S3Object> listFiles(String region, String storageName)
