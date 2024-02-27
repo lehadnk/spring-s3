@@ -52,7 +52,7 @@ public class LibraryTest {
         );
 
         assertEquals(true, uploadFileResult.isSuccess);
-        assertEquals("https://s3.test.com/avatars/test.txt", uploadFileResult.fileUrl);
+        assertEquals("http://s3.test.com/avatars/test.txt", uploadFileResult.fileUrl);
 
         var files = this.s3Service.listFiles("EU", "avatars");
         assertEquals(1, files.size());

@@ -14,3 +14,4 @@ plugins {
 
 rootProject.name = 'spring-s3'
 include('lib')
+project(':lib').name = 'spring-s3'

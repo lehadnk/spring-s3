@@ -1,11 +1,11 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
-    id 'org.springframework.boot' version '2.7.4' apply false
+    id 'cl.franciscosolis.sonatype-central-upload' version '1.0.0'
 }
 
-version = '1.0.2'
-group = 'com.github.lehadnk'
+version = '1.0.3'
+group = 'io.github.lehadnk'
 
 repositories {
     mavenCentral()
@@ -20,7 +20,7 @@ sourceSets {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web:3.0.5'
+    implementation group: 'org.springframework', name: 'spring-context', version: '6.1.4'
     implementation 'software.amazon.awssdk:s3:2.18.41'
 
     intTestImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
@@ -41,26 +41,58 @@ java {
         languageVersion = JavaLanguageVersion.of(19)
     }
     withSourcesJar()
+    withJavadocJar()
 }
 
 jar {
     enabled = true
 }
 
+sonatypeCentralUpload {
+    username = sonatypeTokenUsername
+    password = sonatypeTokenPassword
+
+    archives = files(
+            file("build/libs/spring-s3-${version}.jar"),
+            file("build/libs/spring-s3-${version}-sources.jar"),
+            file("build/libs/spring-s3-${version}-javadoc.jar"),
+    )
+
+    pom = file("build/publications/mavenJava/pom-default.xml")                   // This is the pom file to upload. This is required by central
+
+    publicKey = new File(pgpPublicKeyPath).text
+    signingKeyPassphrase = pgpPassphrase
+    signingKey = new File(pgpPrivateKeyPath).text
+}
+
+tasks.sonatypeCentralUpload.dependsOn('jar', 'sourcesJar', 'javadocJar', 'generatePomFileForMavenJavaPublication')
+
 publishing {
     publications {
-        mavenJava(MavenPublication){
+        mavenJava(MavenPublication) {
             artifactId = 'spring-s3'
-            from components.java
-        }
-    }
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = "https://maven.pkg.github.com/lehadnk/spring-s3"
-            credentials {
-                username = System.getenv("GITHUB_USERNAME")
-                password = System.getenv("GITHUB_TOKEN")
+            pom {
+                name = 'spring-s3'
+                description = 's3 library for Spring'
+                url = 'https://github.com/lehadnk/spring-adminlte'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'lehadnk'
+                        name = 'Alexey Zauzin'
+                        email = 'lehadnk@gmail.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git@github.com:lehadnk/spring-s3.git'
+                    developerConnection = 'scm:git:git@github.com:lehadnk/spring-s3.git'
+                    url = 'https://github.com/lehadnk/spring-s3'
+                }
             }
         }
     }

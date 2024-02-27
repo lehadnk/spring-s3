@@ -35,30 +35,25 @@ public class TestS3Storage implements S3Storage {
     @Override
     public String getKeyPrefix() {
         return this.keyPrefix;
-//        return "avatars/";
     }
 
     @Override
     public String getStorageName() {
         return this.storageName;
-//        return "avatars";
     }
 
     @Override
     public String getStorageRegion() {
         return this.storageRegion;
-//        return "EU";
     }
 
     @Override
     public String getBucketName() {
         return this.bucketName;
-//        return "default";
     }
 
     @Override
     public String getPublicEndpoint() {
         return this.endpoint;
-//        return "https://s3.test.com";
     }
 }
